@@ -7,7 +7,7 @@
             <span>{{item.title}}</span>
             <!-- <img src="http://"  /> -->
             <div class="hover-item">
-              <a-button size="large" type="primary">primary</a-button>
+              <a-button size="large" type="primary" @click="handleClick(item.key)">进入详情</a-button>
             </div>
           </template>
         </a-card>
@@ -19,21 +19,34 @@
 <script lang="ts">
   interface TemplateProps {
     key: string;
+    title: string;
     coverImg?: string;
   }
 
-  import { defineComponent } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { defineComponent, PropType } from 'vue';
 
   export default defineComponent({
     name: 'template-list',
     props: {
       list: {
-        type: Array,
+        type: Array as PropType<TemplateProps[]>,
         required: true
       },
       type: {
         type: String,
         default: 'work'
+      }
+    },
+    setup() {
+      const router = useRouter()
+      
+      const handleClick = (id: string) => {
+        router.push(`/detail/${id}`)
+      }
+
+      return {
+        handleClick
       }
     }
   })
