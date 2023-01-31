@@ -1,6 +1,12 @@
 <template>
   <a-layout style="height:100%">
-    <a-layout-header id="header">Sunny</a-layout-header>
+    <a-layout-header id="header">
+      <router-link to="/">Sunny 搭建</router-link>
+      <span class="rightbtn">
+        <a-button v-if="user.isLogin" @click="logout">{{ user.name }}</a-button>
+        <a-button v-else @click="login">登录</a-button>
+      </span>     
+    </a-layout-header>
     <a-layout-content id="content">
       <router-view />
     </a-layout-content>
@@ -10,14 +16,30 @@
 
 <script lang="ts">
   import { useRoute } from 'vue-router';
-  import { defineComponent } from 'vue';
+  import { computed, defineComponent } from 'vue';
+  import { useStore } from 'vuex';
+  import { GlobalDataProps } from '@/store';
 
   export default defineComponent({
     name: 'layout',
     setup() {
       const { meta } = useRoute()
+      const store = useStore<GlobalDataProps>()
+      const user = computed(() => store.state.user)
+
+      const login = () => {
+        store.commit('login')
+      }
+
+      const logout = () => {
+        store.commit('logout')
+      }
+
       return {
-        noFooter: meta?.noFooter
+        user,
+        noFooter: meta?.noFooter,
+        login,
+        logout
       }
     }
   })
@@ -29,6 +51,10 @@
   }
   #header {
     color: #ffffff;
+  }
+  #header .rightbtn {
+    float: right;
+    right: 20px;
   }
   #content {
     height:100%;

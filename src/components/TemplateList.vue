@@ -8,6 +8,7 @@
             <!-- <img src="http://"  /> -->
             <div class="hover-item">
               <a-button size="large" type="primary" @click="handleClick(item.key)">进入详情</a-button>
+              <a-button size="large" type="primary" @click="handleEditor(item.key)">编辑</a-button>
             </div>
           </template>
         </a-card>
@@ -40,13 +41,18 @@
     },
     setup() {
       const router = useRouter()
-      
+
       const handleClick = (id: string) => {
         router.push(`/detail/${id}`)
       }
 
+      const handleEditor = (id: string) => {
+        router.push(`/editor/${id}`)
+      }
+
       return {
-        handleClick
+        handleClick,
+        handleEditor
       }
     }
   })

@@ -3,7 +3,9 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue'
+  import { computed, defineComponent } from 'vue'
+  import { useStore } from 'vuex';
+  import { GlobalDataProps } from '@/store';
   import TemplateList from '@/components/TemplateList.vue';
 
   export default defineComponent({
@@ -11,13 +13,14 @@
     components: {
       TemplateList
     },
-    data: function() {
+    setup() {
+      const store = useStore<GlobalDataProps>()
+      // computed 才会跟踪变化
+      const list = computed(() => store.state.templates)
+
       return {
-        list: [
-          { key: '1', title: 'xxx111' },
-          { key: '2', title: 'xxx222' }
-        ]
-      };
+        list
+      }
     }
   })
 </script>

@@ -7,7 +7,7 @@
       <a-layout-content class="preview-container">
         <p>画布区域</p>
         <div class="preview-list" id="canvas-area">
-
+          {{ template?.title }}
         </div>
       </a-layout-content>
     </a-layout>
@@ -17,10 +17,23 @@
   </a-layout>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { computed, defineComponent } from 'vue';
+  import { useRoute } from 'vue-router';
+  import { useStore } from 'vuex';
+  import { GlobalDataProps } from '@/store';
+
 
   export default defineComponent({
     name: 'editor',
+    setup() {
+      const { params: { id } } = useRoute()
+      const store = useStore<GlobalDataProps>()
+      const template = computed(() => store.state.templates.find(temp => temp.key === id))
+
+      return {
+        template
+      }
+    }
   })
 </script>
 <style>
